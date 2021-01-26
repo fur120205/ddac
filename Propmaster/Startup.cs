@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.EntityFrameworkCore;
+using Propmaster.Data;
 
 namespace Propmaster
 {
@@ -25,6 +27,9 @@ namespace Propmaster
         {
             services.AddControllersWithViews();
             services.AddRazorPages();
+
+            services.AddDbContext<PropmasterModelContext>(options =>
+                    options.UseSqlServer(Configuration.GetConnectionString("PropmasterModelContext")));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
