@@ -54,7 +54,7 @@ namespace Propmaster.Views
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PropertyId,Title,Description,PropertySize,PropertyLocation,PropertyArea,PropertyType,Price,Furnished,Bedroom,Bathroom,Carpark,CoverUrl,PicUrl,CreatedBy,PropertyStatus,DateCreated")] Property @property)
+        public async Task<IActionResult> Create([Bind("PropertyId,CreatedBy,Title,Description,PropertySize,PropertyLocation,PropertyType,Price,Furnished,Bedroom,Bathroom,Carpark,PicUrl,PropertyStatus,DateCreated")] Property @property)
         {
             if (ModelState.IsValid)
             {
@@ -86,7 +86,7 @@ namespace Propmaster.Views
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("PropertyId,Title,Description,PropertySize,PropertyLocation,PropertyArea,PropertyType,Price,Furnished,Bedroom,Bathroom,Carpark,CoverUrl,PicUrl,CreatedBy,PropertyStatus,DateCreated")] Property @property)
+        public async Task<IActionResult> Edit(int id, [Bind("PropertyId,CreatedBy,Title,Description,PropertySize,PropertyLocation,PropertyType,Price,Furnished,Bedroom,Bathroom,Carpark,PicUrl,PropertyStatus,DateCreated")] Property @property)
         {
             if (id != @property.PropertyId)
             {
