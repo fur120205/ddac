@@ -30,7 +30,13 @@
             </div>
             <div class="form-group">
                 <label asp-for="PropertyLocation" class="control-label"></label>
-                <input asp-for="PropertyLocation" class="form-control" />
+                <select asp-for="PropertyLocation" class="form-control" id="PropertyLocation">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                    <option>5</option>
+                </select>
                 <span asp-validation-for="PropertyLocation" class="text-danger"></span>
             </div>
             <div class="form-group">
