@@ -278,6 +278,7 @@ namespace Propmaster.Views
             Repository repository = new Repository();
             repository.CreateOrUpdate(new Property
             {
+                PropertyLocation = newProperty.PropertyLocation,
                 PartitionKey = newProperty.PropertyLocation,
                 RowKey = Guid.NewGuid().ToString(),
                 CreatedBy = user.Email,
