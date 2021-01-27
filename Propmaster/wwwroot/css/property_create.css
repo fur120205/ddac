@@ -1,0 +1,31 @@
+﻿.select2-container--default .select2-selection--single {
+    border: 1px solid #ced4da !important;
+}
+
+.select2-container .select2-selection--single {
+    height: calc(1.5em + .75rem + 2px) !important;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    padding: .280rem .75rem !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 36px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    background-image: url(https://cdn4.iconfinder.com/data/icons/user-interface-174/32/UIF-76-512.png);
+    background-color: transparent;
+    background-size: contain;
+    border: none !important;
+    height: 20px !important;
+    width: 20px !important;
+    margin-top: 8px !important;
+    top: auto !important;
+    left: auto !important;
+}
+
+.select2-container{
+    width:100% !important;
+}
