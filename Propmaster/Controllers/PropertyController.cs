@@ -53,9 +53,19 @@ namespace Propmaster.Views
             });
             can = HttpContext.Session.GetObjectFromJson<List<Property>>("can");
             PropmasterUser user = await _userManager.GetUserAsync(User);
-            if (can != null && user.Type == "Client")
+            if (user != null)
             {
-                return View("ViewProperties", new Filter { PropertyList = can });
+                if (can != null && (user.Type == "Client" || user.Type == "Agent"))
+                {
+                    return View("ViewProperties", new Filter { PropertyList = can });
+                }
+            }
+            else
+            {
+                if (can != null)
+                {
+                    return View("ViewProperties", new Filter { PropertyList = can });
+                }
             }
             return View(model);
         }
