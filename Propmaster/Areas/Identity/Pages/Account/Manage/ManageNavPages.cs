@@ -15,7 +15,7 @@ namespace Propmaster.Areas.Identity.Pages.Account.Manage
         public static string ChangePassword => "ChangePassword";
 
         public static string DownloadPersonalData => "DownloadPersonalData";
-
+        
         public static string DeletePersonalData => "DeletePersonalData";
 
         public static string ExternalLogins => "ExternalLogins";
