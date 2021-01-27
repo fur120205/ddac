@@ -1,0 +1,36 @@
+﻿@model IEnumerable<Propmaster.Models.Booking>
+@{
+    ViewData["Title"] = "New Booking List";
+}
+
+<h1>ProcessMsgResult</h1>
+
+@foreach (var b in Model)
+{
+    <h4>Booking Id: @b.BookingId.ToString()</h4>
+    @if (b.ClientId != null)
+    {
+        <li>Client Id: @b.ClientId.ToString()</li>
+    }
+    @if (b.ReservedDate != null)
+    {
+        <li>Reserved Date: @b.ReservedDate.ToString()</li>
+    }
+    @if (b.PropertyId != null)
+    {
+        <li>Property Id: @b.PropertyId.ToString()</li>
+    }
+    @if (b.Status != null)
+    {
+        <li>Status: @b.Status.ToString()</li>
+    }
+    @if (b.Type != null)
+    {
+        <li>Type: @b.Type.ToString()</li>
+    }
+    @if (b.Remarks != null)
+    {
+        <li>Remarks: @b.Remarks.ToString()</li>
+    }
+    <br />
+}

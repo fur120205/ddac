@@ -1,11 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Azure.ServiceBus;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Newtonsoft.Json;
 using Propmaster.Areas.Identity.Data;
 using Propmaster.Data;
 using Propmaster.Models;
@@ -16,10 +21,14 @@ namespace Propmaster.Views
     {
         private readonly PropmasterModelContext _context;
         private readonly UserManager<PropmasterUser> _userManager;
-        public BookingController(PropmasterModelContext context, UserManager<PropmasterUser> userManager)
+        IConfiguration configuration;
+        static IQueueClient queueClient;
+
+        public BookingController(PropmasterModelContext context, UserManager<PropmasterUser> userManager, IConfiguration iConfig)
         {
             _context = context;
             _userManager = userManager;
+            configuration = iConfig;
         }
 
         // GET: Booking
@@ -72,6 +81,20 @@ namespace Propmaster.Views
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BookingId,ClientId,ReservedDate,PropertyId,AgentId,Status,Type,Remarks")] Booking booking)
         {
+            // Create a new message to send to the queue.
+            var msg = new Message();
+            string json = JsonConvert.SerializeObject(booking);
+            byte[] arr = Encoding.ASCII.GetBytes(json);
+            msg.ContentType = "application/json";
+            msg.Body = arr;
+
+            // Write the body of the message to the console.
+            Debug.WriteLine($"Sending message: {json}");
+
+            // Send the message to the queue.
+            queueClient = new QueueClient(configuration["QueueConnectionString"], configuration["QueueName"]);
+            await queueClient.SendAsync(msg);
+
             if (ModelState.IsValid)
             {
                 _context.Add(booking);
