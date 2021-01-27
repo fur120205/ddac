@@ -14,6 +14,6 @@ namespace Propmaster.Data
         {
         }
 
-        public DbSet<Propmaster.Models.Property> Property { get; set; }
+        public DbSet<Propmaster.Models.Booking> Booking { get; set; }
     }
 }
