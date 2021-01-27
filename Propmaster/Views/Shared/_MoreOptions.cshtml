@@ -1,0 +1,33 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using Propmaster.Areas.Identity.Data
+
+@inject SignInManager<PropmasterUser> SignInManager
+@inject UserManager<PropmasterUser> UserManager
+@{ var user = await UserManager.GetUserAsync(User); }
+@if (SignInManager.IsSignedIn(User))
+{
+<li class="nav-item dropdown active">
+    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        More
+    </a>
+
+    @if (user.Type == "Admin")
+    {
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item text-dark" asp-controller="Property" asp-action="Index">Create Properties</a>
+        </div>
+    }
+    else if (user.Type == "Agent")
+    {
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item text-dark" href="#">View Consultation</a>
+        </div>
+    }
+    else
+    {
+        <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+            <a class="dropdown-item text-dark" href="#">View Consultation</a>
+        </div>
+    }
+</li>
+}

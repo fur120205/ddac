@@ -1,3 +1,21 @@
 {
-  "dependencies": {}
+  "dependencies": {
+    "mssql1": {
+      "type": "mssql.local",
+      "connectionId": "PropmasterContextConnection"
+    },
+    "mssql2": {
+      "type": "mssql.local",
+      "connectionId": "PropmasterModelContext"
+    },
+    "secrets1": {
+      "type": "secrets.user"
+    },
+    "storage1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/propmasterstorage",
+      "type": "storage.azure",
+      "connectionId": "PropertyTableStorage",
+      "secretStore": "LocalSecretsFile"
+    }
+  }
 }

@@ -3,6 +3,17 @@
     "mssql1": {
       "type": "mssql",
       "connectionId": "PropmasterContextConnection"
+    },
+    "mssql2": {
+      "type": "mssql",
+      "connectionId": "PropmasterModelContext"
+    },
+    "secrets1": {
+      "type": "secrets"
+    },
+    "storage1": {
+      "type": "storage",
+      "connectionId": "PropertyTableStorage"
     }
   }
 }
