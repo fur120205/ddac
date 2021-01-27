@@ -69,10 +69,11 @@
                 {
                     if (!string.IsNullOrWhiteSpace(item))
                     {
-                        <p>@Model.PicUrlList.Count asd @item asd</p>
-                        <img src="@item" />
-                        <a asp-action="DeleteBlob" asp-route-area="@item" asp-route-PropertyLocation="@Model.PropertyLocation" asp-route-PropertyId="@Model.PropertyId">Delete</a>
-                        <button type="button" class="btn btn-info btn-lg updateblob" data-toggle="modal" data-target="#myModal" data-title="@item">Open Modal</button>
+                        <img style="width:300px; padding-bottom: 10px;" src="@item" />
+                        <div class="row">
+                            <a asp-action="DeleteBlob" asp-route-area="@item" asp-route-PropertyLocation="@Model.PropertyLocation" asp-route-PropertyId="@Model.PropertyId">Delete |  </a>
+                            <button type="button" class="btn btn-info updateblob" data-toggle="modal" data-target="#myModal" data-title="@item">  Open Modal</button>
+                        </div>
                     }
                 }
                 <input type="hidden" asp-for="PicUrl" class="form-control" />
@@ -80,9 +81,8 @@
             </div>
             <div class="form-group">
                 <label asp-for="PropertyStatus" class="control-label"></label>
-                <input asp-for="PropertyStatus" class="form-control" />
-                <span asp-validation-for="PropertyStatus" class="text-danger"></span>
-            </div>
+            </div>                <input asp-for="PropertyStatus" class="form-control" />
+            <span asp-validation-for="PropertyStatus" class="text-danger"></span>
             <div class="form-group">
                 <label asp-for="DateCreated" class="control-label"></label>
                 <input asp-for="DateCreated" class="form-control" />
@@ -101,16 +101,16 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Replace photo</h4>
+                    <p class="modal-title">Replace Photo</p>
                 </div>
                 <div class="modal-body">
                     <form asp-action="ReplaceBlob" enctype="multipart/form-data">
                         <input style="padding-bottom: 10px;" asp-for="PicUrl" type="file" id="files" required />
                         <input style="padding-bottom: 10px;" type="hidden" asp-for="Urls" value="" required id="blobname"/>
-                        <input type="submit" value="Save" class="btn btn-primary" />
+                        <input type="submit" value="Save" class="btn btn-primary margin-left: 100px;" />
                     </form>
                 </div>
-                <div class="modal-footer">
+                <div class="modal-footer" style="padding: 0.5rem;">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 </div>
             </div>

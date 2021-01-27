@@ -99,10 +99,10 @@
     <main role="main" class="pn-3" style="display: table; width: 100%;">
         <div class="columned-content-row d-flex justify-content-center">
             <section class="main-content listing-detail listing-detail-body" style="width: 65%;">
-                <section>
-                    <div class="container card-main">
-                        @if (Model != null)
-                        {
+                @if (Model != null)
+                {
+                    <section>
+                        <div class="container card-main">
                             @foreach (var result in Model.PropertyList)
                             {
                                 <a style="color: unset;" asp-action="PropertyDetails" asp-controller="Property" asp-route-PropertyLocation="@result.PropertyLocation" asp-route-PropertyId="@result.PropertyId">
@@ -156,16 +156,17 @@
                                         </div>
                                     </div>
                                 </a>
-                                }
                             }
-                            else
-                            {
-                                <p>No Properties!</p>
-                            }
+
                         </div>
-                </section>
-            </section>
+                    </section>
+                }
+                else
+                {
+                    <p>No Properties!</p>
+                }
         </div>
+        </section>
     </main>
 </div>
     
