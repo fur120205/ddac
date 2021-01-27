@@ -1,0 +1,102 @@
+﻿.arrow {
+    color: #ccc;
+    background-color: #ccc;
+    display: inline-block;
+    height: 1px;
+    width: 12px;
+    position: relative;
+}
+
+.max_value {
+    padding: 6px 6px 6px 30px;
+}
+
+.price_Ranges {
+    float: right;
+    width: 50%;
+}
+
+.price_Ranges a {
+    display: block;
+    text-align: left;
+    padding: 6px 0 6px 0;
+    color: #6f6e6e;
+    font-weight: 500;
+}
+
+.price_Ranges a.max_value {
+    padding-right: 12px;
+    padding-left: 12px;
+    margin-left: 30px;
+}
+
+.price_Ranges a.min_value {
+    padding-right: 22px;
+    padding-left: 12px;
+}
+
+.price_Ranges a.disabled {
+    pointer-events: none;
+    cursor: default;
+    color: #E5E4E2;
+}
+
+.price_Ranges a:hover {
+    background: #0074e4;
+    color: #fff;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+.btnClear {
+    clear: both;
+    border-top: 1px solid #dadada;
+    padding: 5px 0 0 0;
+    text-align: center;
+}
+
+input.inputError,
+input.inputError:focus {
+    border-color: #e2231a;
+    background-color: white;
+    color: #e2231a;
+    box-shadow: inset 0 0 5px #F7BDBB;
+    border-radius: 0;
+}
+
+
+.select2-container--default .select2-selection--single {
+    border: 1px solid #ced4da !important;
+}
+
+.select2-container .select2-selection--single {
+    height: calc(1.6em + .75rem + 2px) !important;
+}
+
+.select2-container .select2-selection--single .select2-selection__rendered {
+    padding: .2rem .75rem !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    height: 40px !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow b {
+    background-image: url(https://cdn4.iconfinder.com/data/icons/user-interface-174/32/UIF-76-512.png);
+    background-color: transparent;
+    background-size: contain;
+    border: none !important;
+    height: 20px !important;
+    width: 20px !important;
+    margin-top: 10px !important;
+    top: auto !important;
+    left: auto !important;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered{
+    line-height:30px
+}
+
+.select2-container {
+    width: 172px !important;
+}

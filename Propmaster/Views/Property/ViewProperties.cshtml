@@ -1,0 +1,285 @@
+﻿@model Propmaster.Models.Filter
+
+@{
+    ViewData["Title"] = "ViewProperties";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@*@{string[] cities = ["Kuala Lumpur", "Shah Alam", "Petaling Jaya", "Selayang", "Ampang Jaya", "Kajang", "Klang", "Subang Jaya", "Johor Bahru", "Iskandar Puteri", "Pasir Gudang",
+    "Alor Setar", "Pasir Gudang", "Alor Setar", "Malacca City", "Seremban", "George Town", "Seberang Perai", "Ipoh", "Kota Kinabalu", "Kuching", "Miri", "Kuala Terengganu"]; }*@
+
+<link rel="stylesheet" href="~/css/view_property.css" />
+
+<div class="container sticky-top" style="padding-bottom: 15px; padding-top: 15px; background-color: lightgray;">
+    <main role="main" class="pn-3" style="display: table; width: 100%;">
+        <form>
+            <div class="form-row justify-content-center">
+                <div class="col-md-3">
+                    <select asp-for="PropertyLocation" class="form-control dropdown-list" id="PropertyLocation">
+                        <option value="Kuala Lumpur" selected>Kuala Lumpur</option>
+                        <option value="Shah Alam">Shah Alam</option>
+                        <option value="Petaling Jaya">Petaling Jaya</option>
+                        <option value="Selayang">Selayang</option>
+                        <option value="Ampang Jaya">Ampang Jaya</option>
+                        <option value="Kajang">Kajang</option>
+                        <option value="Klang">Klang</option>
+                        <option value="Subang Jaya">Subang Jaya</option>
+                        <option value="Johor Bahru">Johor Bahru</option>
+                        <option value="Iskandar Puteri">Iskandar Puteri</option>
+                        <option value="Pasir Gudang">Pasir Gudang</option>
+                        <option value="Alor Setar">Alor Setar</option>
+                        <option value="Malacca City">Malacca City</option>
+                        <option value="Seremban">Seremban</option>
+                        <option value="George Town">George Town</option>
+                        <option value="Seberang Perai">Seberang Perai</option>
+                        <option value="Ipoh">Ipoh</option>
+                        <option value="Kota Kinabalu">Kota Kinabalu</option>
+                        <option value="Kuching">Kuching</option>
+                        <option value="Miri">Miri</option>
+                        <option value="Kuala Terengganu">Kuala Terengganu</option>
+                    </select>
+                </div>
+                <div class="col-md-2 dropdown custom-carets investRange" style="color: #495057;">
+                    <button class="dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="outline: unset; color: unset; background-color: #fff; border: unset;width:110px;height:38px;border-radius:4px;">
+                        Price
+                    </button>
+                    <div class="dropdown-menu ddRange" role="menu">
+                        <div class="rangemenu">
+                            <div class="freeformPrice" style="padding:10px;">
+                                <div style="margin-bottom: 10px">
+                                    <input asp-for="MinPrice" type="text" class="min_input form-control" placeholder="Min Price">
+                                </div>
+                                <div class="col-md-2 "><span class="arrow"></span></div>
+                                <div>
+                                    <input asp-for="MaxPrice" type="text" class="max_input form-control" placeholder="Max Price">
+                                </div>
+                            </div>
+                            <div class="btnClear">
+                                <a href="javascript:void(0)" class="btn btn-link">Clear</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 dropdown custom-carets">
+                    <button class="form-control dropdown-toggle text-truncate" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-align: left; padding-left: 15px;">
+                        More filters
+                    </button>
+                    <div class="dropdown-menu dropdownmenu" style="padding: 10px; min-width: 300px; max-width: 300px;">
+                        <div>
+                            <select asp-for="Bedroom" id="Bedrooms" class="form-control" placeholder="Bedrooms">
+                                <option value="1" selected>1 Bedroom</option>
+                                <option value="2">2 Bedrooms</option>
+                                <option value="3">3 Bedrooms</option>
+                                <option value="4">4+ Bedrooms</option>
+                            </select>
+                        </div>
+                        <div>
+                            <select asp-for="PropertyType" class="form-control" placeholder="PropertyType">
+                                <option value="Bungalow / Villa / Cluster houses" selected>Bungalow / Villa / Cluster houses</option>
+                                <option value="Single storey">Single storey</option>
+                                <option value="One and a half storey">One and a half storey</option>
+                                <option value="Double storey">Double storey</option>
+                                <option value="Two and a half storey">Two and a half storey</option>
+                                <option value="Triple storey">Triple storey</option>
+                                <option value="Semi detached">Semi detached</option>
+                                <option value="Townhouse">Townhouse</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                        @*<button class="btn btn-danger" type="submit" style="padding: .375rem .75rem; box-shadow: unset; margin-top: 10px;">Search</button>*@
+                    </div>
+                </div>
+                <div class="col-md-1" style="margin-left: 20px;">
+                    <button class="btn btn-danger searchbutton" type="submit" value="Filter" style="margin: unset;padding: .375rem .75rem; box-shadow: unset; width: 140px;" asp-action="Filter" asp-controller="Property">Search</button>
+                </div>
+            </div>
+        </form>
+    </main>
+</div>
+<div class="container" style="padding-bottom: 15px; padding-top: 15px;">
+    <main role="main" class="pn-3" style="display: table; width: 100%;">
+        <div class="columned-content-row d-flex justify-content-center">
+            <section class="main-content listing-detail listing-detail-body" style="width: 65%;">
+                <section>
+                    <div class="container card-main">
+                        @if (Model != null)
+                        {
+                            @foreach (var result in Model.PropertyList)
+                            {
+                                <a style="color: unset;" asp-action="PropertyDetails" asp-controller="Property" asp-route-PropertyLocation="@result.PropertyLocation" asp-route-PropertyId="@result.PropertyId">
+                                    <div class="card mb-3 item" style="max-width: 100%; min-width: 100%; width: 100%;">
+                                        <div class="row no-gutters">
+                                            @{List<string> urlList = new List<string>();}
+                                            @if (!string.IsNullOrWhiteSpace(result.PicUrl))
+                                            {
+                                                string[] arr = result.PicUrl.Split(",");
+                                                if (!string.IsNullOrWhiteSpace(arr[0]))
+                                                {
+                                                    urlList = arr.ToList();
+                                                    if (urlList.Count != 0)
+                                                    {
+                                                        urlList = urlList.Select(u => "https://propmasterstorage.blob.core.windows.net/propertyblobstorage/" + u).ToList();
+                                                        <div class="col-md-4">
+                                                            <img src="@urlList[0]" style="min-height: 204px; max-height: 204px" class="card-img" alt="...">
+                                                        </div>
+                                                    }
+                                                }
+                                            }
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">@result.Title</h5>
+                                                    <div>
+                                                        <label class="card-text">@result.PropertyLocation</label>
+                                                    </div>
+                                                    <div>
+                                                        <label class="card-text price"><span>RM </span>@result.Price</label>
+                                                    </div>
+                                                    <div>
+                                                        <label class="card-text">
+                                                            <span>@result.Bedroom</span>
+                                                            <i class="fas fa-bed"></i>
+                                                        </label>
+                                                        <label class="card-text">
+                                                            <span style="font-size: 16px;">@result.Bathroom</span>
+                                                            <i class="fas fa-bath"></i>
+                                                        </label>
+                                                        <label class="col-label" style="color:gray;"> | </label>
+                                                        <label class="card-text">
+                                                            <span style="font-size: 16px;">@result.PropertySize</span>
+                                                            sqft
+                                                        </label>
+                                                        <label class="col-label" style="color:gray;"> | </label>
+                                                        <label class="card-text">RM <span style="font-size: 16px;">@result.Price</span></label>
+                                                    </div>
+                                                    <p class="card-text"><small class="text-muted">Listed by <span>@result.CreatedBy</span></small></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>
+                                }
+                            }
+                            else
+                            {
+                                <p>No Properties!</p>
+                            }
+                        </div>
+                </section>
+            </section>
+        </div>
+    </main>
+</div>
+    
+<script>
+    $('.dropdown-menu.ddRange')
+        .click(function (e) {
+            e.stopPropagation();
+        });
+        $(".dropdownmenu").click(function (e) {
+            e.stopPropagation();
+        })
+
+        $('.down2').click(function () {
+            $('.menu2').toggleClass('show');
+            $('.menu3').removeClass('show');
+        });
+
+        $('.down3').click(function () {
+            $('.menu3').toggleClass('show');
+            $('.menu2').removeClass('show');
+        });
+
+    function disableDropDownRangeOptions(max_values, minValue) {
+        if (max_values) {
+            max_values.each(function () {
+                var maxValue = $(this).attr("value");
+
+                if (parseInt(maxValue) < parseInt(minValue)) {
+                    $(this).addClass('disabled');
+                } else {
+                    $(this).removeClass('disabled');
+                }
+            });
+        }
+    }
+
+    function setuinvestRangeDropDownList(min_values, max_values, min_input, max_input, clearLink, dropDownControl) {
+        min_values.click(function () {
+            var minValue = $(this).attr('value');
+            min_input.val(minValue);
+            document.getElementById('price_range1').innerHTML = minValue;
+
+            disableDropDownRangeOptions(max_values, minValue);
+
+            validateDropDownInputs();
+        });
+
+        max_values.click(function () {
+            var maxValue = $(this).attr('value');
+            max_input.val(maxValue);
+            document.getElementById('price_range2').innerHTML = maxValue;
+
+            toggleDropDown();
+        });
+
+        clearLink.click(function () {
+            min_input.val('');
+            max_input.val('');
+
+            disableDropDownRangeOptions(max_values);
+
+            validateDropDownInputs();
+        });
+
+        min_input.on('input',
+            function () {
+                var minValue = min_input.val();
+
+                disableDropDownRangeOptions(max_values, minValue);
+                validateDropDownInputs();
+            });
+
+        max_input.on('input', validateDropDownInputs);
+
+        max_input.blur('input',
+            function () {
+                toggleDropDown();
+            });
+
+        function validateDropDownInputs() {
+            var minValue = parseInt(min_input.val());
+            var maxValue = parseInt(max_input.val());
+
+            if (maxValue > 0 && minValue > 0 && maxValue < minValue) {
+                min_input.addClass('inputError');
+                max_input.addClass('inputError');
+
+                return false;
+            } else {
+                min_input.removeClass('inputError');
+                max_input.removeClass('inputError');
+
+                return true;
+            }
+        }
+
+        function toggleDropDown() {
+            if (validateDropDownInputs() &&
+                parseInt(min_input.val()) > 0 &&
+                parseInt(max_input.val()) > 0) {
+
+                // auto close if two values are valid
+                dropDownControl.dropdown('toggle');
+            }
+        }
+    }
+
+    setuinvestRangeDropDownList(
+        $('.investRange .min_value'),
+        $('.investRange .max_value'),
+        $('.investRange .freeformPrice .min_input'),
+        $('.investRange .freeformPrice .max_input'),
+        $('.investRange .btnClear'),
+        $('.investRange .dropdown-toggle'));
+
+    $('.dropdown-list').select2();
+</script>
