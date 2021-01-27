@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Azure.Cosmos.Table;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.WindowsAzure.Storage.Blob;
 using Propmaster.Areas.Identity.Data;
 using Propmaster.Data;
 using Propmaster.Models;
@@ -55,11 +57,99 @@ namespace Propmaster.Views
             return View();
         }
 
+        private CloudBlobContainer GetBlobStorageInformation()
+        {
+            //step 1: read appsettings.json
+            var builder = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()).AddJsonFile("appsettings.json");
+            IConfigurationRoot configure = builder.Build();
+
+            //to get key access
+            //once linked, time to read the content to get the connectionstring
+            Microsoft.WindowsAzure.Storage.CloudStorageAccount objectAccount = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(configure["ConnectionStrings:propertytablestorage"]);
+
+            //step 3: how to create a new container / link to a container in the blob storage account.
+            CloudBlobClient blobClient = objectAccount.CreateCloudBlobClient();
+            CloudBlobContainer container = blobClient.GetContainerReference("propertyblobstorage"); //give the container a name
+
+            //step 4: return the conatiner to be created/referred
+            return container;
+
+        }
+
+        public string UploadImages(List<IFormFile> images)
+        {
+            //step 1: refer to storage info
+            CloudBlobContainer container = GetBlobStorageInformation();
+
+            string urlList = "";
+
+            foreach (IFormFile image in images)
+            {
+                if (image != null && image.Length > 0)
+                {
+                    try
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            image.CopyTo(ms);
+                            string extension = image.FileName.Split('.').ElementAt(1);
+                            string blobName = Path.GetFileName(Guid.NewGuid().ToString().Replace("-", string.Empty)) + "." + extension;
+                            CloudBlockBlob blob = container.GetBlockBlobReference(blobName);
+                            ms.Position = 0;
+                            blob.UploadFromStreamAsync(ms).Wait();
+                            urlList = urlList + blobName + ",";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        return ex.Message;
+                    }
+                }
+                
+            }
+
+            if (string.IsNullOrWhiteSpace(urlList))
+            {
+                return urlList;
+            }
+            else
+            {
+                return urlList.Remove(urlList.Length - 1);
+            }
+        }
+
+        //private string UploadedFile(EmployeeViewModel model)
+        //{
+        //    string uniqueFileName = null;
+
+        //    if (model.ProfileImage != null)
+        //    {
+        //        string uploadsFolder = Path.Combine(webHostEnvironment.WebRootPath, "images");
+        //        uniqueFileName = Guid.NewGuid().ToString() + "_" + model.ProfileImage.FileName;
+        //        string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+        //        using (var fileStream = new FileStream(filePath, FileMode.Create))
+        //        {
+        //            model.ProfileImage.CopyTo(fileStream);
+        //        }
+        //    }
+        //    return uniqueFileName;
+        //}
+
         public IActionResult ConfirmEdit(string PropertyLocation, string PropertyId)
         {
             Repository repository = new Repository();
             Property item = repository.Get(PropertyLocation, PropertyId);
-            return View("Edit", new Property
+            List<string> urlList = new List<string>();
+            string[] arr = item.PicUrl.Split(",");
+            if (!string.IsNullOrWhiteSpace(arr[0]))
+            {
+                urlList = arr.ToList();
+                if (urlList.Count != 0)
+                {
+                    urlList = urlList.Select(u => "https://propmasterstorage.blob.core.windows.net/propertyblobstorage/" + u).ToList();
+                }
+            }
+            return View("Edit", new CreateListingModel
             {
                 PropertyLocation = item.PartitionKey,
                 PropertyId = item.RowKey,
@@ -73,14 +163,59 @@ namespace Propmaster.Views
                 Bedroom = item.Bedroom,
                 Bathroom = item.Bathroom,
                 Carpark = item.Carpark,
-                PicUrl = item.PicUrl,
+                PicUrlList = urlList,
                 PropertyStatus = item.PropertyStatus,
                 DateCreated = item.DateCreated
             });
 
         }
+
+        public string EditImages(List<IFormFile> images, string originalUrls)
+        {
+            //step 1: refer to storage info
+            CloudBlobContainer container = GetBlobStorageInformation();
+
+            string urlList = "";
+
+            foreach (IFormFile image in images)
+            {
+                if (image != null && image.Length > 0)
+                {
+                    try
+                    {
+                        using (var ms = new MemoryStream())
+                        {
+                            image.CopyTo(ms);
+                            string extension = image.FileName.Split('.').ElementAt(1);
+                            //string blobName = Path.GetFileName(Guid.NewGuid().ToString().Replace("-", string.Empty)) + "." + extension;
+                            string blobName = "a618732b105d46d3a81ca9fee5820088.png";
+                            CloudBlockBlob blob = container.GetBlockBlobReference(blobName);
+                            ms.Position = 0;
+                            blob.UploadFromStreamAsync(ms).Wait();
+                            urlList = urlList + blobName + ",";
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        return ex.Message;
+                    }
+                }
+
+            }
+
+            if (string.IsNullOrWhiteSpace(urlList))
+            {
+                return urlList;
+            }
+            else
+            {
+                return urlList.Remove(urlList.Length - 1);
+            }
+        }
+
         public IActionResult ConfirmDelete(string PropertyLocation, string PropertyId)
         {
+            //DeleteBlob("048092863729432fb08aed5e3fdfecad.png");
             Repository repository = new Repository();
             Property item = repository.Get(PropertyLocation, PropertyId);
             return View("Delete", new Property
@@ -104,6 +239,34 @@ namespace Propmaster.Views
 
         }
 
+        public IActionResult DeleteBlob(string area, string PropertyLocation, string PropertyId)
+        {
+            Repository repository = new Repository();
+            Property item = repository.Get(PropertyLocation, PropertyId);
+            CloudBlobContainer container = GetBlobStorageInformation();
+            area = area.Replace("https://propmasterstorage.blob.core.windows.net/propertyblobstorage/", string.Empty);
+            string blobName = "";
+            try
+            {
+                //specifying which blob to refer
+                CloudBlockBlob deleteItem = container.GetBlockBlobReference(area);
+                blobName = deleteItem.Name;
+                //download file
+                deleteItem.DeleteIfExistsAsync();
+                var existingUrls = item.PicUrl.Split(',').ToList();
+                existingUrls.Remove(area);
+                string urls = String.Join(",", existingUrls.Select(u => u));
+                item.PicUrl = urls;
+                repository.CreateOrUpdate(item);
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         public IActionResult Delete(string PropertyLocation, string PropertyId)
         {
@@ -114,25 +277,29 @@ namespace Propmaster.Views
 
         }
         [HttpPost]
-        public async Task<IActionResult> Create(Property property)
+        public async Task<IActionResult> Create(CreateListingModel newProperty)
         {
+            List<IFormFile> images = newProperty.PicUrl.ToList();
+            string urls = "";
+            urls = UploadImages(images);
+
             PropmasterUser user = await _userManager.GetUserAsync(this.User);
             Repository repository = new Repository();
             repository.CreateOrUpdate(new Property
             {
-                PartitionKey = property.PropertyLocation,
+                PartitionKey = newProperty.PropertyLocation,
                 RowKey = Guid.NewGuid().ToString(),
                 CreatedBy = user.Email,
-                Title = property.Title,
-                Description = property.Description,
-                PropertySize = property.PropertySize,
-                PropertyType = property.PropertyType,
-                Price = property.Price,
-                Furnished = property.Furnished,
-                Bedroom = property.Bedroom,
-                Bathroom = property.Bathroom,
-                Carpark = property.Carpark,
-                PicUrl = property.PicUrl,
+                Title = newProperty.Title,
+                Description = newProperty.Description,
+                PropertySize = newProperty.PropertySize,
+                PropertyType = newProperty.PropertyType,
+                Price = newProperty.Price,
+                Furnished = newProperty.Furnished,
+                Bedroom = newProperty.Bedroom,
+                Bathroom = newProperty.Bathroom,
+                Carpark = newProperty.Carpark,
+                PicUrl = urls,
                 PropertyStatus = "Available",
                 DateCreated = DateTime.Now
             });
@@ -141,6 +308,7 @@ namespace Propmaster.Views
 
         public IActionResult Edit(Property property)
         {
+            //EditImages(images, item.PicUrl);
             Repository repository = new Repository();
             repository.CreateOrUpdate(new Property
             {

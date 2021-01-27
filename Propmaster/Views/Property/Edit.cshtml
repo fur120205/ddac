@@ -1,4 +1,4 @@
-﻿@model Propmaster.Models.Property
+﻿@model Propmaster.Models.CreateListingModel
 
 @{
     ViewData["Title"] = "Edit";
@@ -65,9 +65,16 @@
                 <span asp-validation-for="Carpark" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="PicUrl" class="control-label"></label>
-                <input asp-for="PicUrl" class="form-control" />
-                <span asp-validation-for="PicUrl" class="text-danger"></span>
+                @foreach (var item in Model.PicUrlList)
+                {
+                    if (!string.IsNullOrWhiteSpace(item))
+                    {
+                        <p>@Model.PicUrlList.Count asd @item asd</p>
+                        <img src="@item" />
+                        <a asp-action="DeleteBlob" asp-route-area="@item" asp-route-PropertyLocation="@Model.PropertyLocation" asp-route-PropertyId="@Model.PropertyId">Delete</a>
+                    }
+                }
+
             </div>
             <div class="form-group">
                 <label asp-for="PropertyStatus" class="control-label"></label>
@@ -82,7 +89,7 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-        </form>
+</form>
     </div>
 </div>
 
