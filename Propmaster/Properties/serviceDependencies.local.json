@@ -8,13 +8,16 @@
       "type": "mssql.local",
       "connectionId": "PropmasterModelContext"
     },
-    "secrets1": {
-      "type": "secrets.user"
-    },
     "storage1": {
       "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Storage/storageAccounts/propmasterstorage",
       "type": "storage.azure",
       "connectionId": "PropertyTableStorage",
+      "secretStore": "LocalSecretsFile"
+    },
+    "appInsights1": {
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourceGroups/[parameters('resourceGroupName')]/providers/microsoft.insights/components/PropmasterAppInsight",
+      "type": "appInsights.azure",
+      "connectionId": "APPINSIGHTS_INSTRUMENTATIONKEY",
       "secretStore": "LocalSecretsFile"
     }
   }

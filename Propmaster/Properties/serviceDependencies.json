@@ -8,12 +8,13 @@
       "type": "mssql",
       "connectionId": "PropmasterModelContext"
     },
-    "secrets1": {
-      "type": "secrets"
-    },
     "storage1": {
       "type": "storage",
       "connectionId": "PropertyTableStorage"
+    },
+    "appInsights1": {
+      "type": "appInsights",
+      "connectionId": "APPINSIGHTS_INSTRUMENTATIONKEY"
     }
   }
 }
