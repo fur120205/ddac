@@ -379,6 +379,8 @@ namespace Propmaster.Views
         {
             Repository repository = new Repository();
             List<Property> propList = repository.GetAll().ToList();
+            if (MinPrice == null) MinPrice = "0";
+            if (MaxPrice == null) MaxPrice = "0";
             can = propList.Where(p => (p.PropertyLocation == PropertyLocation || p.PartitionKey == PropertyLocation) && p.PropertyType == PropertyType && Decimal.Parse(p.Price) >= Decimal.Parse(MinPrice) && Decimal.Parse(p.Price) <= Decimal.Parse(MaxPrice) && p.Bedroom == Bedroom).ToList();
             HttpContext.Session.SetObjectAsJson("can", can);
             return RedirectToAction("Index");
