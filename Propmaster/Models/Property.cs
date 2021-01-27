@@ -41,6 +41,22 @@ namespace Propmaster.Models
             TableResult result = propertyTable.Execute(operation);
             return result.Result as Property;
         }
+        //public Property Filter(string PropertyLocation, string PropertyType, string MinPrice, string MaxPrice, int Bedroom)
+        //{
+        //    string startsWithCondition = TableQuery.CombineFilters(
+        //        TableQuery.GenerateFilterCondition("PartitionKey", QueryComparisons.Equal, "PropertyLocation"),
+        //        TableOperators.And,
+        //        TableQuery.GenerateFilterCondition("PropertyType", QueryComparisons.Equal, "PropertyType"),
+        //        TableOperators.And,
+        //        TableQuery.GenerateFilterCondition("Price", QueryComparisons.GreaterThanOrEqual, "MinPrice"),
+        //        TableOperators.And,
+        //        TableQuery.GenerateFilterCondition("Price", QueryComparisons.LessThanOrEqual, "MaxPrice"),
+        //        TableOperators.And,
+        //        TableQuery.GenerateFilterCondition("Bedroom", QueryComparisons.Equal, "Bedroom"));
+        //    TableOperation operation = TableOperation.Retrieve<Property>(PropertyLocation, PropertyType, MinPrice, MaxPrice, Bedroom);
+        //    TableResult result = propertyTable.Execute(operation);
+        //    return result.Result as Property;
+        //}
     }
 
     public class Property : TableEntity

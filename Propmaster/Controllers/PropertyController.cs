@@ -24,6 +24,8 @@ namespace Propmaster.Views
             _userManager = userManager;
         }
 
+        List<Property> can;
+
         // GET: Property
         public IActionResult Index()
         {
@@ -47,6 +49,11 @@ namespace Propmaster.Views
                 PropertyStatus = x.PropertyStatus,
                 DateCreated = x.DateCreated
             });
+            can = HttpContext.Session.GetObjectFromJson<List<Property>>("can");
+            if (can != null)
+            {
+                return View("ViewProperties", new Filter { PropertyList = can });
+            }
             return View(model);
         }
 
@@ -181,6 +188,39 @@ namespace Propmaster.Views
                 PropertyStatus = item.PropertyStatus,
                 DateCreated = item.DateCreated
             });
+        }
+
+        public IActionResult PropertyDetails(string PropertyLocation, string PropertyId)
+        {
+            Repository repository = new Repository();
+            Property item = repository.Get(PropertyLocation, PropertyId);
+            return View("ViewPropertiesDetails", new Property
+            {
+                PropertyLocation = item.PartitionKey,
+                PropertyId = item.RowKey,
+                CreatedBy = item.CreatedBy,
+                Title = item.Title,
+                Description = item.Description,
+                PropertySize = item.PropertySize,
+                PropertyType = item.PropertyType,
+                Price = item.Price,
+                Furnished = item.Furnished,
+                Bedroom = item.Bedroom,
+                Bathroom = item.Bathroom,
+                Carpark = item.Carpark,
+                PicUrl = item.PicUrl,
+                PropertyStatus = item.PropertyStatus,
+                DateCreated = item.DateCreated
+            });
+        }
+
+        public IActionResult Filter([Bind("PropertyId,CreatedBy,Title,Description,PropertySize,PropertyLocation,PropertyType,Price,Furnished,Bedroom,Bathroom,Carpark,PicUrl,PropertyStatus,DateCreated")] string PropertyLocation, string PropertyType, string MinPrice, string MaxPrice, int Bedroom)
+        {
+            Repository repository = new Repository();
+            List<Property> propList = repository.GetAll().ToList();
+            can = propList.Where(p => (p.PropertyLocation == PropertyLocation || p.PartitionKey == PropertyLocation) && p.PropertyType == PropertyType && Decimal.Parse(p.Price) >= Decimal.Parse(MinPrice) && Decimal.Parse(p.Price) <= Decimal.Parse(MaxPrice) && p.Bedroom == Bedroom).ToList();
+            HttpContext.Session.SetObjectAsJson("can", can);
+            return RedirectToAction("Index");
         }
 
         //// GET: Property/Details/5

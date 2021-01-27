@@ -10,108 +10,6 @@
 <p>
     <a asp-controller="Property" asp-action="Create">Create New</a>
 </p>
-@*<table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Title)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Description)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PropertySize)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PropertyLocation)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PropertyType)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Price)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Furnished)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Bedroom)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Bathroom)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Carpark)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PicUrl)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.CreatedBy)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.PropertyStatus)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.DateCreated)
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-    @foreach (var item in Model) {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PropertySize)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PropertyLocation)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PropertyType)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Furnished)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Bedroom)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Bathroom)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Carpark)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PicUrl)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.CreatedBy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.PropertyStatus)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.DateCreated)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.PropertyId">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.PropertyId">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.PropertyId">Delete</a>
-                </td>
-            </tr>
-    }
-        </tbody>
-    </table>*@
 
 <table class="table">
     <thead>
@@ -132,49 +30,52 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var result in Model)
+        @if (Model != null)
         {
-        <tr>
-            <td>
-                @result.PropertyId
-            </td>
-            <td>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div>
-                            <label class="col-label" style="color:black; font-size: 0.9rem !important;" id="title">@result.Title</label>
+            @foreach (var result in Model)
+            {
+                <tr>
+                    <td>
+                        @result.PropertyId
+                    </td>
+                    <td>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div>
+                                    <label class="col-label" style="color:black; font-size: 0.9rem !important;" id="title">@result.Title</label>
+                                </div>
+                                <div>
+                                    <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="location">@result.PropertyLocation</label>
+                                </div>
+                                <div>
+                                    <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="propertytype">@result.PropertyType</label>
+                                    <label class="col-label" style="color:gray; font-size: 0.8rem !important;"> | </label>
+                                    <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="propertysize"> @result.PropertySize sqft</label>
+                                </div>
+                                <div>
+                                    <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="furnised">@result.Furnished</label>
+                                    <label class="col-label" style="color:gray; font-size: 0.8rem !important;"> | </label>
+                                    <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="price">RM @result.Price</label>
+                                </div>
+                                <div>
+                                    <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="bedroom"><i class="fas fa-bed"></i> @result.Bedroom</label>
+                                    <label class="col-label" style="color:gray; font-size: 0.8rem !important;"> | </label>
+                                    <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="bathroom"><i class="fas fa-bath"></i> @result.Bathroom</label>
+                                    <label class="col-label" style="color:gray; font-size: 0.8rem !important;"> | </label>
+                                    <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="carpark"><i class="fas fa-car"></i> @result.Carpark</label>
+                                </div>
+                            </div>
                         </div>
-                        <div>
-                            <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="location">@result.PropertyLocation</label>
-                        </div>
-                        <div>
-                            <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="propertytype">@result.PropertyType</label>
-                            <label class="col-label" style="color:gray; font-size: 0.8rem !important;"> | </label>
-                            <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="propertysize"> @result.PropertySize sqft</label>
-                        </div>
-                        <div>
-                            <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="furnised">@result.Furnished</label>
-                            <label class="col-label" style="color:gray; font-size: 0.8rem !important;"> | </label>
-                            <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="price">RM @result.Price</label>
-                        </div>
-                        <div>
-                            <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="bedroom"><i class="fas fa-bed"></i> @result.Bedroom</label>
-                            <label class="col-label" style="color:gray; font-size: 0.8rem !important;"> | </label>
-                            <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="bathroom"><i class="fas fa-bath"></i> @result.Bathroom</label>
-                            <label class="col-label" style="color:gray; font-size: 0.8rem !important;"> | </label>
-                            <label class="col-label" style="color:gray; font-size: 0.8rem !important;" id="carpark"><i class="fas fa-car"></i> @result.Carpark</label>
-                        </div>
-                    </div>
-                </div>
-            </td>
-            <th scope="row" id="status">@result.PropertyStatus</th>
-            <th scope="row" id="datecreated">@result.DateCreated</th>
-            <td>
-                <a asp-controller="Property" asp-action="ConfirmEdit" asp-route-PropertyLocation="@result.PropertyLocation" asp-route-PropertyId="@result.PropertyId">Edit</a> |
-                <a asp-controller="Property" asp-action="Details" asp-route-PropertyLocation="@result.PropertyLocation" asp-route-PropertyId="@result.PropertyId">Details</a> |
-                <a asp-controller="Property" asp-action="ConfirmDelete" asp-route-PropertyLocation="@result.PropertyLocation" asp-route-PropertyId="@result.PropertyId">Delete</a>
-            </td>
-        </tr>
+                    </td>
+                    <th scope="row" id="status">@result.PropertyStatus</th>
+                    <th scope="row" id="datecreated">@result.DateCreated</th>
+                    <td>
+                        <a asp-controller="Property" asp-action="ConfirmEdit" asp-route-PropertyLocation="@result.PropertyLocation" asp-route-PropertyId="@result.PropertyId">Edit</a> |
+                        <a asp-controller="Property" asp-action="Details" asp-route-PropertyLocation="@result.PropertyLocation" asp-route-PropertyId="@result.PropertyId">Details</a> |
+                        <a asp-controller="Property" asp-action="ConfirmDelete" asp-route-PropertyLocation="@result.PropertyLocation" asp-route-PropertyId="@result.PropertyId">Delete</a>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
