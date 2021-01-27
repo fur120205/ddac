@@ -163,11 +163,11 @@ namespace Propmaster.Views
                 Bedroom = item.Bedroom,
                 Bathroom = item.Bathroom,
                 Carpark = item.Carpark,
+                PicUrl = item.PicUrl,
                 PicUrlList = urlList,
                 PropertyStatus = item.PropertyStatus,
                 DateCreated = item.DateCreated
             });
-
         }
 
 
@@ -233,7 +233,7 @@ namespace Propmaster.Views
             {
                 using (var ms = new MemoryStream())
                 {
-                    foreach (var image in propertyModel.PicUrl)
+                    foreach (var image in propertyModel.Pictures)
                     {
                         image.CopyTo(ms);
                         string extension = image.FileName.Split('.').ElementAt(1);
@@ -263,7 +263,7 @@ namespace Propmaster.Views
         [HttpPost]
         public async Task<IActionResult> Create(CreateListingModel newProperty)
         {
-            List<IFormFile> images = newProperty.PicUrl.ToList();
+            List<IFormFile> images = newProperty.Pictures.ToList();
             string urls = "";
             urls = UploadImages(images);
 
@@ -290,22 +290,28 @@ namespace Propmaster.Views
             return RedirectToAction("Index");
         }
 
-        public IActionResult Edit(Property property)
+        public IActionResult Edit(CreateListingModel createListingModel)
         {
             Repository repository = new Repository();
             repository.CreateOrUpdate(new Property
             {
-                Title = property.Title,
-                Description = property.Description,
-                PropertySize = property.PropertySize,
-                PropertyType = property.PropertyType,
-                Price = property.Price,
-                Furnished = property.Furnished,
-                Bedroom = property.Bedroom,
-                Bathroom = property.Bathroom,
-                Carpark = property.Carpark,
-                PicUrl = property.PicUrl,
-                PropertyStatus = property.PropertyStatus
+                PartitionKey = createListingModel.PropertyLocation,
+                RowKey = createListingModel.PropertyId,
+                CreatedBy = createListingModel.CreatedBy,
+                DateCreated = createListingModel.DateCreated,
+                PropertyId = createListingModel.PropertyId,
+                PropertyLocation = createListingModel.PropertyLocation,
+                Title = createListingModel.Title,
+                Description = createListingModel.Description,
+                PropertySize = createListingModel.PropertySize,
+                PropertyType = createListingModel.PropertyType,
+                Price = createListingModel.Price,
+                Furnished = createListingModel.Furnished,
+                Bedroom = createListingModel.Bedroom,
+                Bathroom = createListingModel.Bathroom,
+                Carpark = createListingModel.Carpark,
+                PicUrl = createListingModel.PicUrl,
+                PropertyStatus = createListingModel.PropertyStatus
             });
             return RedirectToAction("Index");
         }

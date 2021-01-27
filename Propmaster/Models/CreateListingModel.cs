@@ -48,7 +48,7 @@ namespace Propmaster.Models
         public int Carpark { get; set; }
 
         [Required]
-        public List<IFormFile> PicUrl { get; set; }
+        public string PicUrl { get; set; }
 
         [Required]
         public string PropertyStatus { get; set; }
@@ -59,5 +59,7 @@ namespace Propmaster.Models
         public List<string> PicUrlList { get; set; }
 
         public string Urls { get; set; }
+
+        public List<IFormFile> Pictures { get; set; }
     }
 }

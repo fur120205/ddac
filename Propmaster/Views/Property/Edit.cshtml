@@ -75,7 +75,8 @@
                         <button type="button" class="btn btn-info btn-lg updateblob" data-toggle="modal" data-target="#myModal" data-title="@item">Open Modal</button>
                     }
                 }
-
+                <input type="hidden" asp-for="PicUrl" class="form-control" />
+                <input type="hidden" asp-for="CreatedBy" class="form-control" />
             </div>
             <div class="form-group">
                 <label asp-for="PropertyStatus" class="control-label"></label>
