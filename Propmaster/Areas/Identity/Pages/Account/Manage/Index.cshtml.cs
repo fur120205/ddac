@@ -35,11 +35,6 @@ namespace Propmaster.Areas.Identity.Pages.Account.Manage
         {
             [Required]
             [DataType(DataType.Text)]
-            [Display(Name = "User Type")]
-            public string Type { get; set; }
-
-            [Required]
-            [DataType(DataType.Text)]
             [Display(Name = "Full name")]
             public string Name { get; set; }
 
@@ -48,7 +43,6 @@ namespace Propmaster.Areas.Identity.Pages.Account.Manage
             [Display(Name = "Birth Date")]
             public DateTime DOB { get; set; }
 
-            [Required]
             [EmailAddress]
             public string Email { get; set; }
 
@@ -112,10 +106,6 @@ namespace Propmaster.Areas.Identity.Pages.Account.Manage
                 }
             }
 
-            if (Input.Type != user.Type)
-            {
-                user.Type = Input.Type;
-            }
             if (Input.Name != user.Name)
             {
                 user.Name = Input.Name;
