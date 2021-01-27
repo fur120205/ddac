@@ -276,11 +276,13 @@ namespace Propmaster.Views
 
             PropmasterUser user = await _userManager.GetUserAsync(this.User);
             Repository repository = new Repository();
+            string newPropertyId = Guid.NewGuid().ToString();
             repository.CreateOrUpdate(new Property
             {
                 PropertyLocation = newProperty.PropertyLocation,
                 PartitionKey = newProperty.PropertyLocation,
-                RowKey = Guid.NewGuid().ToString(),
+                RowKey = newPropertyId,
+                PropertyId = newPropertyId,
                 CreatedBy = user.Email,
                 Title = newProperty.Title,
                 Description = newProperty.Description,
