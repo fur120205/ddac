@@ -134,7 +134,7 @@ namespace Propmaster.Views
         //    }
         //    return uniqueFileName;
         //}
-
+        [ResponseCache(NoStore = true, Location = ResponseCacheLocation.None)]
         public IActionResult ConfirmEdit(string PropertyLocation, string PropertyId)
         {
             Repository repository = new Repository();
@@ -170,48 +170,6 @@ namespace Propmaster.Views
 
         }
 
-        public string EditImages(List<IFormFile> images, string originalUrls)
-        {
-            //step 1: refer to storage info
-            CloudBlobContainer container = GetBlobStorageInformation();
-
-            string urlList = "";
-
-            foreach (IFormFile image in images)
-            {
-                if (image != null && image.Length > 0)
-                {
-                    try
-                    {
-                        using (var ms = new MemoryStream())
-                        {
-                            image.CopyTo(ms);
-                            string extension = image.FileName.Split('.').ElementAt(1);
-                            //string blobName = Path.GetFileName(Guid.NewGuid().ToString().Replace("-", string.Empty)) + "." + extension;
-                            string blobName = "a618732b105d46d3a81ca9fee5820088.png";
-                            CloudBlockBlob blob = container.GetBlockBlobReference(blobName);
-                            ms.Position = 0;
-                            blob.UploadFromStreamAsync(ms).Wait();
-                            urlList = urlList + blobName + ",";
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        return ex.Message;
-                    }
-                }
-
-            }
-
-            if (string.IsNullOrWhiteSpace(urlList))
-            {
-                return urlList;
-            }
-            else
-            {
-                return urlList.Remove(urlList.Length - 1);
-            }
-        }
 
         public IActionResult ConfirmDelete(string PropertyLocation, string PropertyId)
         {
@@ -267,6 +225,32 @@ namespace Propmaster.Views
             return RedirectToAction("Index");
         }
 
+        public IActionResult ReplaceBlob(CreateListingModel propertyModel)
+        {
+            CloudBlobContainer container = GetBlobStorageInformation();
+            string blobName = propertyModel.Urls.Replace("https://propmasterstorage.blob.core.windows.net/propertyblobstorage/", string.Empty);
+            try
+            {
+                using (var ms = new MemoryStream())
+                {
+                    foreach (var image in propertyModel.PicUrl)
+                    {
+                        image.CopyTo(ms);
+                        string extension = image.FileName.Split('.').ElementAt(1);
+                        CloudBlockBlob blob = container.GetBlockBlobReference(blobName);
+                        ms.Position = 0;
+                        blob.UploadFromStreamAsync(ms).Wait();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction("Index");
+        }
+
         [HttpPost]
         public IActionResult Delete(string PropertyLocation, string PropertyId)
         {
@@ -308,7 +292,6 @@ namespace Propmaster.Views
 
         public IActionResult Edit(Property property)
         {
-            //EditImages(images, item.PicUrl);
             Repository repository = new Repository();
             repository.CreateOrUpdate(new Property
             {

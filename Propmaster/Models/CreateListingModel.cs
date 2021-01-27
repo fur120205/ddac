@@ -57,5 +57,7 @@ namespace Propmaster.Models
         public DateTime DateCreated { get; set; }
 
         public List<string> PicUrlList { get; set; }
+
+        public string Urls { get; set; }
     }
 }

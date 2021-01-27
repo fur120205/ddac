@@ -4,7 +4,7 @@
     ViewData["Title"] = "Edit";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <h1>Edit</h1>
 
 <h4>Property</h4>
@@ -72,6 +72,7 @@
                         <p>@Model.PicUrlList.Count asd @item asd</p>
                         <img src="@item" />
                         <a asp-action="DeleteBlob" asp-route-area="@item" asp-route-PropertyLocation="@Model.PropertyLocation" asp-route-PropertyId="@Model.PropertyId">Delete</a>
+                        <button type="button" class="btn btn-info btn-lg updateblob" data-toggle="modal" data-target="#myModal" data-title="@item">Open Modal</button>
                     }
                 }
 
@@ -89,9 +90,39 @@
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
-</form>
+        </form>
     </div>
+
+    <div class="modal fade" id="myModal" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Replace photo</h4>
+                </div>
+                <div class="modal-body">
+                    <form asp-action="ReplaceBlob" enctype="multipart/form-data">
+                        <input style="padding-bottom: 10px;" asp-for="PicUrl" type="file" id="files" required />
+                        <input style="padding-bottom: 10px;" type="hidden" asp-for="Urls" value="" required id="blobname"/>
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
 </div>
+<script>
+    $('.updateblob').on('click', function () {
+        document.getElementById("blobname").value = $(this).data('title');
+    });
+</script>
 
 <div>
     <a asp-action="Index">Back to List</a>
