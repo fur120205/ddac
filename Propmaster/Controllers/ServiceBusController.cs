@@ -49,24 +49,6 @@ namespace Propmaster.Controllers
             return RedirectToAction("ProcessMsgResult");
         }
 
-        //public async Task<IActionResult> ProcessMsg()
-        //{
-        //    //queueClient = new QueueClient(ServiceBusConnectionString, QueueName, ReceiveMode.PeekLock);
-        //    items = new List<string>();
-        //    await Task.Factory.StartNew(() =>
-        //    {
-        //        queueClient = new QueueClient(configuration["QueueConnectionString"], configuration["QueueName"], ReceiveMode.PeekLock);
-        //        var options = new MessageHandlerOptions(ExceptionMethod)
-        //        {
-        //            MaxConcurrentCalls = 1,
-        //            AutoComplete = false
-        //        };
-        //        queueClient.RegisterMessageHandler(ExecuteMessageProcessing, options);
-        //    });
-
-        //    return RedirectToAction("ProcessMsgResult");
-        //}
-
         private static async Task ExecuteMessageProcessing(Message message, CancellationToken arg2)
         {
             //var result = JsonConvert.DeserializeObject<Ostring>(Encoding.UTF8.GetString(message.Body));

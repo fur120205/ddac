@@ -29,7 +29,7 @@ namespace Propmaster.Views
         List<Property> can;
 
         // GET: Property
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
             Repository repository = new Repository();
             IEnumerable<Property> entities = repository.GetAll();
@@ -52,7 +52,8 @@ namespace Propmaster.Views
                 DateCreated = x.DateCreated
             });
             can = HttpContext.Session.GetObjectFromJson<List<Property>>("can");
-            if (can != null)
+            PropmasterUser user = await _userManager.GetUserAsync(User);
+            if (can != null && user.Type == "Client")
             {
                 return View("ViewProperties", new Filter { PropertyList = can });
             }
@@ -276,10 +277,13 @@ namespace Propmaster.Views
 
             PropmasterUser user = await _userManager.GetUserAsync(this.User);
             Repository repository = new Repository();
+            string newPropertyId = Guid.NewGuid().ToString();
             repository.CreateOrUpdate(new Property
             {
+                PropertyLocation = newProperty.PropertyLocation,
                 PartitionKey = newProperty.PropertyLocation,
-                RowKey = Guid.NewGuid().ToString(),
+                RowKey = newPropertyId,
+                PropertyId = newPropertyId,
                 CreatedBy = user.Email,
                 Title = newProperty.Title,
                 Description = newProperty.Description,
@@ -375,6 +379,8 @@ namespace Propmaster.Views
         {
             Repository repository = new Repository();
             List<Property> propList = repository.GetAll().ToList();
+            if (MinPrice == null) MinPrice = "0";
+            if (MaxPrice == null) MaxPrice = "0";
             can = propList.Where(p => (p.PropertyLocation == PropertyLocation || p.PartitionKey == PropertyLocation) && p.PropertyType == PropertyType && Decimal.Parse(p.Price) >= Decimal.Parse(MinPrice) && Decimal.Parse(p.Price) <= Decimal.Parse(MaxPrice) && p.Bedroom == Bedroom).ToList();
             HttpContext.Session.SetObjectAsJson("can", can);
             return RedirectToAction("Index");

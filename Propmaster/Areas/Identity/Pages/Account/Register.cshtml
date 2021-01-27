@@ -24,7 +24,7 @@
                 <h4>@ViewData["Description"]</h4>
                 <hr />
                 <div asp-validation-summary="All" class="text-danger"></div>
-                <div class="form-group">
+                @*<div class="form-group">
 
                     @{
                             List<SelectListItem> listItems = new List<SelectListItem>();
@@ -48,7 +48,7 @@
                     }
                     <label asp-for="Input.Type"></label>
                     <select asp-for="Input.Type" asp-items="listItems"></select>
-                </div>
+                </div>*@
                 <div class="form-group">
                     <label asp-for="Input.Email"></label>
                     <input asp-for="Input.Email" class="form-control" />
