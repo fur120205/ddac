@@ -29,7 +29,7 @@ namespace Propmaster.Views
         List<Property> can;
 
         // GET: Property
-        public IActionResult Index()
+        public async Task<IActionResult> IndexAsync()
         {
             Repository repository = new Repository();
             IEnumerable<Property> entities = repository.GetAll();
@@ -52,7 +52,8 @@ namespace Propmaster.Views
                 DateCreated = x.DateCreated
             });
             can = HttpContext.Session.GetObjectFromJson<List<Property>>("can");
-            if (can != null)
+            PropmasterUser user = await _userManager.GetUserAsync(User);
+            if (can != null && user.Type == "Client")
             {
                 return View("ViewProperties", new Filter { PropertyList = can });
             }
