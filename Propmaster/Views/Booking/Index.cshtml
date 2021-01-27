@@ -1,0 +1,146 @@
+﻿@model IEnumerable<Propmaster.Models.Booking>
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+@if (ViewData["Title"] == "View bookings") //if user is agent
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ClientId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReservedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PropertyId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AgentId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Remarks)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClientId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReservedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PropertyId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AgentId);
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @if (item.Remarks == null)
+                        {
+                            <p>None</p>
+                        }
+                        else
+                        {
+                            Html.DisplayFor(modelItem => item.Remarks);
+                        }
+                    </td>
+                    <td>
+                        @if (item.Status == "Unassigned")
+                        {
+                            <a asp-action="Accept" asp-route-id="@item.BookingId">Accept | </a>
+                        }
+                        <a asp-action="Details" asp-route-id="@item.BookingId">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.ReservedDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PropertyId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AgentId)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Status)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Type)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Remarks)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ReservedDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PropertyId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AgentId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Type)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Remarks)
+                    </td>
+                    <td>
+                        @if (item.Status == "Cancelled" || item.Status == "Completed")
+                        {
+                            <a asp-action="Details" asp-route-id="@item.BookingId">Details</a>
+                        }
+                        else
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.BookingId">Edit |</a>
+                            <a asp-action="Details" asp-route-id="@item.BookingId" > Details |</a>
+                            <a asp-action="Cancel" asp-route-id="@item.BookingId" > Cancel </a>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
