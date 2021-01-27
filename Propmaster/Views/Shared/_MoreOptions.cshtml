@@ -20,13 +20,14 @@
     else if (user.Type == "Agent")
     {
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item text-dark" href="#">View Consultation</a>
+            <a class="dropdown-item text-dark" asp-controller="Booking" asp-action="Index">View Bookings</a>
+            <a class="dropdown-item text-dark" asp-controller="ServiceBus" asp-action="Index">Bookings Notification</a>
         </div>
     }
     else
     {
         <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-            <a class="dropdown-item text-dark" href="#">View Consultation</a>
+            <a class="dropdown-item text-dark" asp-controller="Booking" asp-action="Index">View Bookings</a>
         </div>
     }
 </li>

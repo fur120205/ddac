@@ -74,6 +74,11 @@ namespace Propmaster.Areas.Identity.Pages.Account
             [Display(Name = "Confirm password")]
             [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
             public string ConfirmPassword { get; set; }
+
+            [Required]
+            [Phone]
+            [Display(Name = "Phone number")]
+            public string PhoneNumber { get; set; }
         }
 
         public async Task OnGetAsync(string returnUrl = null)
@@ -113,7 +118,8 @@ namespace Propmaster.Areas.Identity.Pages.Account
                     DOB = Input.DOB,
                     UserName = Input.Email,
                     Email = Input.Email,
-                    EmailConfirmed = confirmEmail,
+                    PhoneNumber = Input.PhoneNumber,
+                    EmailConfirmed = confirmEmail
                 };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if (result.Succeeded)

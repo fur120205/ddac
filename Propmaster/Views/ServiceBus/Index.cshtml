@@ -1,0 +1,10 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>@ViewBag.msg</p>
+
+<button>@Html.ActionLink("Retrieve Message from the Service Bus.", "ProcessMsg", new { })</button>
